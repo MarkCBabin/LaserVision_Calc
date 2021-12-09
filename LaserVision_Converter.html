@@ -1,0 +1,192 @@
+<html>
+<head>
+	<title> Unit Converter </title>
+	<style>
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+    		/* display: none; <- Crashes Chrome on hover */
+    		-webkit-appearance: none;
+    		margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+		}
+	input[type=number] {
+		-moz-appearance:textfield; /* Firefox */
+		}
+	/* These commands hide the arrows that normally show on a "number" type input field in html for all broswers (commented out to say which) */
+	*{box-sizing: border-box;}
+	.column {float: left; padding: 10px;}
+		.left {width: 25%;}
+		.left_right {width: 25%;}
+		.right_left {width: 25%;}
+		.right {width: 25%;}
+	.row:after {content: ""; display: table; clear: both;}
+	</style>
+</head>
+<!-- This creates a footer at the bottom of the page, used to hold the "Last Updated" section -->
+ <style>
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: black;
+  text-align: left;
+}
+</style>
+
+<div class="footer">
+  <p>&ensp; <center>YAG fundamental: 1064.216nm, as measured on 3/29/21 <br> This page last updated: 4/1/21</center></p>
+</div> 
+
+
+
+<body>
+<font size ="5"><center>LaserVision Calculator</center></font><br><br>
+<div class="row"><div class="column left">
+	What is the OPO nIR wavelength? Measured in air (nm) <br><br>
+	What is the YAG wavelength? Measured in air (nm) <br>
+  </div>
+
+<div class="column left_right" >
+	<input type="number" id="userInput1"=></input><br><br>
+	<input type="number" id="userInput2"=></input><br>
+ </div>
+<div class="column right_left" >
+What is your desired frequency? (vac, cm<sup>-1</sup>)
+</div>
+<div class="column right" >
+<input type="number" id="cm_desired"=></input><br><br>
+</div>
+
+</div>
+<!-- gives an input box, defines it as a numeric input, and gives it an ID for the later functions -->
+<hr width=100% align=center>
+<style>
+	*{box-sizing: border-box;}
+	.column {float: left; padding: 10px;}
+		.left {width: 25%;}
+		.right {width: 25%;}
+	.row:after {content: ""; display: table; clear: both;}
+</style>
+</head>
+<body>
+<!-- these got flipped in my head, so the function labels below are messed up. It was easier to change this than all variables! -->
+<div class="row"><div class="column left">
+iIR wavelength in vac (nm) is: <br><br>
+iIR frequency in vac (cm<sup>-1</sup>) is: <br><br>
+mIR wavelength in vac (nm) is: <br><br>
+mIR frequency in vac (cm<sup>-1</sup>) is: <br><br>
+</div>
+
+<div class="column right" >
+	</label>
+	<input type="textbox" name="display"/>
+	<br><br>
+	<label for="displayValue"></label>
+	<input type="textbox" name="display_cm"/>
+	<br><br>
+	<label for="displayValue"></label>
+	<input type="textbox" name="display2"/>
+	<br><br>
+	<label for="displayValue"></label>
+	<input type="textbox" name="display2_cm"/>
+	<br>
+</div>
+<div class="column left_right" >
+Should measure this nIR to use iIR: (air)<br><br>
+Should measure this nIR to use mIR: (air)<br>
+</div>
+<div class="column right" >	
+</label>
+	<input type="textbox" name="mIR_req"/>
+	<br><br>
+</label>
+	<input type="textbox" name="iIR_req"/>
+	<br><br><br><br>
+<button onclick="ReadMe()">Confused? Read me!</button>
+</div>
+</div>
+
+
+<!-- These create the output boxes for our calculated values! -->
+    <script>
+	document.getElementById("userInput1").onkeyup = function() {mIR();iIR();mIR_cm();iIR_cm()};
+	document.getElementById("userInput2").onkeyup = function() {mIR();iIR();mIR_cm();iIR_cm()};
+<!-- using "onkeyup" tells the javascript to run upon a keystroke being completed -->
+<!-- this syntax says "once a key is released on either of these two boxes, run both functions" -->
+        function mIR()
+        {
+        var OPO = document.getElementById("userInput1").value;
+	var YAG_harmonic = document.getElementById("userInput2").value/2;
+	var mIR_out = OPO*YAG_harmonic/(OPO-YAG_harmonic)
+	var mIR_out_vac = mIR_out / 1.000273050027
+       	document.getElementsByName('display')[0].value= mIR_out_vac;
+        }
+<!-- function to calc mIR wavelength; takes two wavelengths and converts to the third -->
+<!-- prints output to the 'display' tag on this page -->
+        function iIR()
+        {
+        var OPO = document.getElementById("userInput1").value;
+	var YAG = document.getElementById("userInput2").value;
+	var mIR = OPO*(YAG/2)/(OPO-(YAG/2))
+	var iIR_out = YAG*mIR/(mIR-YAG)
+	var iIR_out_vac = iIR_out / 1.000273050027
+       	document.getElementsByName('display2')[0].value= iIR_out_vac;
+        }
+	function mIR_cm()
+        {
+        var OPO = document.getElementById("userInput1").value;
+	var YAG_harmonic = document.getElementById("userInput2").value/2;
+	var mIR_out = OPO*YAG_harmonic/(OPO-YAG_harmonic)
+	var mIR_out_vac = mIR_out / 1.000273050027
+	var mIR_cm = 10000000/mIR_out_vac
+       	document.getElementsByName('display_cm')[0].value= mIR_cm;
+        }
+        function iIR_cm()
+        {
+        var OPO = document.getElementById("userInput1").value;
+	var YAG = document.getElementById("userInput2").value;
+	var mIR = OPO*(YAG/2)/(OPO-(YAG/2))
+	var iIR_out = YAG*mIR/(mIR-YAG)
+	var iIR_out_vac = iIR_out / 1.000273050027
+	var iIR_cm = 10000000/iIR_out_vac
+       	document.getElementsByName('display2_cm')[0].value= iIR_cm;
+        }
+document.getElementById("cm_desired").onkeyup = function() {mIR_required();iIR_required()};
+        function mIR_required()
+        {
+	var mIR_cm = document.getElementById("cm_desired").value;
+	var mIR_req_vac = 10000000/mIR_cm
+	var mIR_req = mIR_req_vac * 1.000273050027
+	var nIR_req = 532*mIR_req/(mIR_req-532)
+	if (nIR_req < 710) {
+	       	document.getElementsByName('mIR_req')[0].value= "out of range";
+		}
+	else if (nIR_req > 880) {
+	       	document.getElementsByName('mIR_req')[0].value= "out of range";
+		}
+	else {
+	document.getElementsByName('mIR_req')[0].value= nIR_req;
+		}
+        }
+        function iIR_required()
+        {
+	var iIR_cm = document.getElementById("cm_desired").value;
+	var iIR_req_vac = 10000000/iIR_cm
+	var iIR_req = iIR_req_vac * 1.000273050027
+	var nIR_req = 1064.216*iIR_req/(1064.216+iIR_req)
+	if (nIR_req < 710) {
+	       	document.getElementsByName('iIR_req')[0].value= "out of range";
+		}
+	else if (nIR_req > 880) {
+	       	document.getElementsByName('iIR_req')[0].value= "out of range";
+		}
+	else {
+	document.getElementsByName('iIR_req')[0].value= nIR_req;
+		}
+        }
+	function ReadMe()
+	{document.write("To use the <q>LaserVision Calculator</q> enter values into the boxes above the horizontal line. Each column is a standalone calculator and requires all boxes above the line to be filled in to work. <br><br> The language in this calculator mirrors that of the LaserVision manual (specifically from the <q>Optical Theory of the System</q> page). Notably, the three abbreviations pulled are <br><br> nIR = near IR (710-880nm output of OPO) <br> iIR = intermediate IR (1.35-2.128 &mu;m output of OPO) <br> mIR = mid IR (4.7 &mu;m and beyond output of OPA) <br><br> Values to be entered must be in the units specified (nm on the left, wavenumber on the right) and must be numeric - they can be integers or contain decimals. Using the arrow keys will adjust the value by a full integer and trigger the calculator. <b>All values on the left column must be measured in air</b> (not using the vac setting on the WaveMaster), as the output is converted to vacuum. Similarly, the out of the right column are wavelenth values in air, not vacuum! The refractive index used here is the average refractive index over 1.35 and 14 &mu;m - calculated as 1.000273050027 from this <a href='https://refractiveindex.info/?shelf=other&book=air&page=Mathar-7.5'>reference</a>. Numerical testing (using <a href = 'https://emtoolbox.nist.gov/Wavelength/Ciddor.asp'>this source</a>) has indicated that variance of the refractive index due to wavelenth, temperature, humidity, [CO<sub>2</sub>], and pressure cause differences less than 0.1 cm<sup>-1</sup> and so an average is sufficient for our needs, given the bandwidth of the LaserVision. <br><br> The calculator on the right currently assumes that the YAG fundamental is 1064.216, as measured by Mark on 3/29/21 using the WaveMeteer probe - this can be adjusted in the .html file if that has changed (only should if cavity is adjusted). <br><br> The output of the calculator should be clearly labeled, and the functions that do this calculation are triggered upon a keystroke. The rightmost calculator will report <q>out of range</q> if the desired frequency is not capable of being produced by the mIR or iIR output on the system (based on the nIR OPO output limitations stated in the manual). <br><br> To get out of this instructional page and back to the calculator, reload the page!")
+	}
+    </script>
+</body>
+</html>
